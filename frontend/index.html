@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Phantom Symptom | Multi-Modal Crop Doctor</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-950 text-white min-h-screen">
+
+    <!-- HEADER -->
+    <header class="border-b border-slate-800">
+        <div class="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center">
+
+            <div>
+                <h1 class="text-2xl font-bold text-green-400">
+                    🌱 Phantom Symptom
+                </h1>
+
+                <p class="text-sm text-slate-400">
+                    Multi-Modal AI Crop Doctor
+                </p>
+            </div>
+
+            <div class="text-sm text-green-400">
+                AI26AG03
+            </div>
+
+        </div>
+    </header>
+
+
+    <!-- HERO -->
+    <section class="max-w-6xl mx-auto px-6 py-16">
+
+        <div class="text-center max-w-3xl mx-auto">
+
+            <p class="text-green-400 font-semibold mb-3">
+                MULTI-MODAL AGRICULTURAL AI
+            </p>
+
+            <h2 class="text-4xl md:text-6xl font-bold mb-6">
+                Don't just see the symptom.
+                <span class="text-green-400">
+                    Find the cause.
+                </span>
+            </h2>
+
+            <p class="text-slate-400 text-lg">
+                Phantom Symptom combines crop images, farmer observations
+                and environmental conditions to identify possible causes
+                behind confusing crop symptoms.
+            </p>
+
+            <p class="text-xs text-slate-500 mt-5">
+                Local demo • Click Analyze and enter your Gemini API key when asked.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ANALYSIS SECTION -->
+    <main class="max-w-6xl mx-auto px-6 pb-20">
+
+        <div class="grid lg:grid-cols-2 gap-8">
+
+            <!-- INPUT CARD -->
+            <div class="glass rounded-3xl p-8">
+
+                <h3 class="text-2xl font-bold mb-2">
+                    🔍 Analyze Your Crop
+                </h3>
+
+                <p class="text-slate-400 mb-8">
+                    Provide the crop image and field information.
+                </p>
+
+
+                <!-- IMAGE -->
+                <label class="block mb-2 font-semibold">
+                    Crop / Leaf Image
+                </label>
+
+                <input
+                    id="imageInput"
+                    type="file"
+                    accept="image/*"
+                    class="w-full mb-6 bg-slate-900 border border-slate-700 rounded-xl p-3"
+                >
+
+
+                <!-- CROP -->
+                <label class="block mb-2 font-semibold">
+                    Crop
+                </label>
+
+                <select
+                    id="crop"
+                    class="w-full mb-6 bg-slate-900 border border-slate-700 rounded-xl p-3"
+                >
+                    <option value="Tomato">Tomato</option>
+                    <option value="Rice">Rice</option>
+                    <option value="Wheat">Wheat</option>
+                    <option value="Maize">Maize</option>
+                    <option value="Cotton">Cotton</option>
+                    <option value="Chilli">Chilli</option>
+                    <option value="Other">Other</option>
+                </select>
+
+
+                <!-- SYMPTOMS -->
+                <label class="block mb-2 font-semibold">
+                    Farmer's Symptoms
+                </label>
+
+                <textarea
+                    id="symptoms"
+                    rows="4"
+                    placeholder="Example: Leaves are turning yellow and the plant is growing slowly..."
+                    class="w-full mb-6 bg-slate-900 border border-slate-700 rounded-xl p-3"
+                ></textarea>
+
+
+                <!-- ENVIRONMENT -->
+                <h4 class="font-semibold text-lg mb-4">
+                    🌦️ Environmental Conditions
+                </h4>
+
+                <div class="grid grid-cols-3 gap-3">
+
+                    <div>
+                        <label class="text-sm text-slate-400">
+                            Temperature °C
+                        </label>
+
+                        <input
+                            id="temperature"
+                            type="number"
+                            value="30"
+                            class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-xl p-3"
+                        >
+                    </div>
+
+                    <div>
+                        <label class="text-sm text-slate-400">
+                            Humidity %
+                        </label>
+
+                        <input
+                            id="humidity"
+                            type="number"
+                            value="65"
+                            class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-xl p-3"
+                        >
+                    </div>
+
+                    <div>
+                        <label class="text-sm text-slate-400">
+                            Soil Moisture %
+                        </label>
+
+                        <input
+                            id="soilMoisture"
+                            type="number"
+                            value="40"
+                            class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-xl p-3"
+                        >
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTON -->
+                <button
+                    id="analyzeButton"
+                    onclick="analyzeCrop()"
+                    class="w-full mt-8 bg-green-500 hover:bg-green-400 text-black font-bold py-4 rounded-xl transition"
+                >
+                    🌱 Analyze My Crop
+                </button>
+
+            </div>
+
+
+            <!-- RESULT CARD -->
+            <div class="glass rounded-3xl p-8">
+
+                <h3 class="text-2xl font-bold mb-2">
+                    🧠 AI Analysis
+                </h3>
+
+                <p class="text-slate-400 mb-8">
+                    Your crop analysis will appear here.
+                </p>
+
+
+                <div
+                    id="loading"
+                    class="hidden text-center py-12"
+                >
+                    <div class="text-4xl mb-4">
+                        🤖
+                    </div>
+
+                    <p class="text-green-400 font-semibold">
+                        Analyzing your crop...
+                    </p>
+
+                    <p class="text-slate-500 text-sm mt-2">
+                        Combining image, symptoms and environment.
+                    </p>
+                </div>
+
+
+                <div
+                    id="result"
+                    class="hidden"
+                >
+
+                    <div class="bg-slate-900 rounded-2xl p-5 mb-5">
+
+                        <p class="text-sm text-slate-400">
+                            Most likely cause
+                        </p>
+
+                        <h4
+                            id="mainCause"
+                            class="text-2xl font-bold text-green-400 mt-1"
+                        >
+                        </h4>
+
+                        <p class="mt-3">
+                            Confidence:
+                            <span
+                                id="mainConfidence"
+                                class="font-bold"
+                            ></span>%
+                        </p>
+
+                    </div>
+
+
+                    <div class="bg-slate-900 rounded-2xl p-5 mb-5">
+
+                        <h4 class="font-bold mb-3">
+                            Possible Causes
+                        </h4>
+
+                        <div id="diagnosisList"></div>
+
+                    </div>
+
+
+                    <div class="bg-slate-900 rounded-2xl p-5 mb-5">
+
+                        <h4 class="font-bold mb-2">
+                            🔎 Explanation
+                        </h4>
+
+                        <p
+                            id="explanation"
+                            class="text-slate-400"
+                        ></p>
+
+                    </div>
+
+
+                    <div class="bg-green-950 border border-green-800 rounded-2xl p-5">
+
+                        <h4 class="font-bold mb-2 text-green-400">
+                            💡 Recommendation
+                        </h4>
+
+                        <p
+                            id="recommendation"
+                            class="text-slate-300"
+                        ></p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="emptyResult"
+                    class="text-center py-12"
+                >
+
+                    <div class="text-6xl mb-5">
+                        🌿
+                    </div>
+
+                    <p class="text-slate-500">
+                        Upload a crop image and provide symptoms
+                        to begin analysis.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- HOW IT WORKS -->
+        <section class="mt-16">
+
+            <h3 class="text-3xl font-bold text-center mb-10">
+                How Phantom Symptom Works
+            </h3>
+
+            <div class="grid md:grid-cols-4 gap-5">
+
+                <div class="glass rounded-2xl p-6">
+                    <div class="text-3xl mb-4">📷</div>
+                    <h4 class="font-bold mb-2">1. Image</h4>
+                    <p class="text-slate-400 text-sm">
+                        Upload a photo of the affected crop.
+                    </p>
+                </div>
+
+                <div class="glass rounded-2xl p-6">
+                    <div class="text-3xl mb-4">📝</div>
+                    <h4 class="font-bold mb-2">2. Symptoms</h4>
+                    <p class="text-slate-400 text-sm">
+                        Describe what the farmer observes.
+                    </p>
+                </div>
+
+                <div class="glass rounded-2xl p-6">
+                    <div class="text-3xl mb-4">🌦️</div>
+                    <h4 class="font-bold mb-2">3. Environment</h4>
+                    <p class="text-slate-400 text-sm">
+                        Add temperature, humidity and soil moisture.
+                    </p>
+                </div>
+
+                <div class="glass rounded-2xl p-6">
+                    <div class="text-3xl mb-4">🤖</div>
+                    <h4 class="font-bold mb-2">4. AI Reasoning</h4>
+                    <p class="text-slate-400 text-sm">
+                        Combine all evidence to identify possible causes.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800 py-8 text-center">
+
+        <p class="text-slate-500 text-sm">
+            Phantom Symptom • AI26AG03 • Multi-Modal Crop Doctor
+        </p>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+    <script>
+        function getApiKey() {
+            return sessionStorage.getItem("phantom_gemini_key") || "";
+        }
+
+        function askForApiKey() {
+            const existing = getApiKey();
+            const key = prompt(
+                "Paste your NEW Gemini API key.\n\nYour key is kept only in this browser session and is not sent to this website's server except as part of the Gemini request."
+                + (existing ? "\n\nA key is already saved for this session. Leave blank to keep it." : ""),
+                ""
+            );
+            if (key && key.trim()) {
+                sessionStorage.setItem("phantom_gemini_key", key.trim());
+            }
+            return getApiKey();
+        }
+
+        async function analyzeCrop() {
+            const imageInput = document.getElementById("imageInput");
+            const crop = document.getElementById("crop").value;
+            const symptoms = document.getElementById("symptoms").value;
+            const temperature = document.getElementById("temperature").value;
+            const humidity = document.getElementById("humidity").value;
+            const soilMoisture = document.getElementById("soilMoisture").value;
+
+            if (!imageInput.files.length) {
+                alert("Please upload a crop image first.");
+                return;
+            }
+
+            let apiKey = getApiKey();
+            if (!apiKey) apiKey = askForApiKey();
+            if (!apiKey) {
+                alert("Gemini API key is required for AI analysis.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("image", imageInput.files[0]);
+            formData.append("crop", crop);
+            formData.append("symptoms", symptoms);
+            formData.append("temperature", temperature);
+            formData.append("humidity", humidity);
+            formData.append("soil_moisture", soilMoisture);
+            formData.append("api_key", apiKey);
+
+            document.getElementById("emptyResult").classList.add("hidden");
+            document.getElementById("result").classList.add("hidden");
+            document.getElementById("loading").classList.remove("hidden");
+            document.getElementById("analyzeButton").disabled = true;
+            document.getElementById("analyzeButton").textContent = "🤖 Analyzing...";
+
+            try {
+                const response = await fetch("/analyze", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (!response.ok || !data.success) {
+                    throw new Error(data.details || data.error || "AI analysis failed.");
+                }
+
+                const firstDiagnosis = data.diagnosis[0];
+                document.getElementById("mainCause").textContent = firstDiagnosis.cause;
+                document.getElementById("mainConfidence").textContent = firstDiagnosis.confidence;
+
+                const diagnosisList = document.getElementById("diagnosisList");
+                diagnosisList.innerHTML = "";
+                data.diagnosis.forEach(function(item) {
+                    const row = document.createElement("div");
+                    row.className = "flex justify-between border-b border-slate-800 py-3";
+                    const cause = document.createElement("span");
+                    cause.textContent = item.cause;
+                    const confidence = document.createElement("span");
+                    confidence.className = "text-green-400 font-bold";
+                    confidence.textContent = item.confidence + "%";
+                    row.appendChild(cause);
+                    row.appendChild(confidence);
+                    diagnosisList.appendChild(row);
+                });
+
+                document.getElementById("explanation").textContent = data.explanation;
+                document.getElementById("recommendation").textContent = data.recommendation;
+                document.getElementById("loading").classList.add("hidden");
+                document.getElementById("result").classList.remove("hidden");
+            } catch (error) {
+                console.error(error);
+                document.getElementById("loading").classList.add("hidden");
+                document.getElementById("emptyResult").classList.remove("hidden");
+                alert("Analysis failed.\n\n" + error.message);
+            } finally {
+                document.getElementById("analyzeButton").disabled = false;
+                document.getElementById("analyzeButton").textContent = "🌱 Analyze My Crop";
+            }
+        }
+    </script>
+
+</body>
+</html>
